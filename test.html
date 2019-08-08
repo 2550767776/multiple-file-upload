@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>多文件上传示例</title>
+    <link href="./diyUpload.css" rel="stylesheet">
+    <script src="./jquery.min.js"></script>
+</head>
+
+<body>
+    <div style="padding: 20px;">
+        <ul class="upload-ul clearfix">
+            <li class="upload-pick">
+                <div class="webuploader-container clearfix" id="goodsUpload">
+                </div>
+            </li>
+        </ul>
+    </div>
+    <p>
+        <button id="upload">提交</button>
+    </p>
+</body>
+
+<script src="./diyUpload.js"></script>
+<script>
+    $(function () {
+        var preview = [{
+            "id": 2451,
+            "url": "http://stsound.oss-cn-beijing.aliyuncs.com/img/2019/8/db89dadd-8fe9-4057-835c-648df3e72dd6.jpg"
+        }, {
+            "id": 2452,
+            "url": "http://stsound.oss-cn-beijing.aliyuncs.com/img/2019/8/5ae1e552-da16-42c0-ba2e-3d1b9043c5d3.png"
+        }];
+        //上传图片
+        var $tgaUpload = $('#goodsUpload').diyUpload({
+            url: 'http://127.0.0.1:8083/commonService/api/file/ossUpload',
+            success: function (data) {
+                console.log("图片上传成功！");
+            },
+            error: function (err) {
+                console.log("图片上传失败！");
+            },
+            headers: {
+                'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NjUyMzMwMjYsInVzZXJKc29uU3RyIjoie1wiYWNjb3VudFR5cGVcIjpcImJ1c2luZXNzXCIsXCJjb21wYW55SWRcIjoxLFwiZW1haWxcIjpcIjE1MjI0MzAwNjM4NDJAcXEuY29tXCIsXCJpZFwiOjEsXCJpc0RlbGV0ZVwiOjAsXCJsb2dpbklkXCI6OCxcIm5pY2tuYW1lXCI6XCLpu5HpuKXoj6notoXnuqfnrqHnkIblkZhcIixcInN0YXR1c1wiOjEsXCJ0ZWxcIjpcIjE1MDg0MzEwMDQxXCIsXCJ0b2tlblNhbHRcIjpcIjU5MjRhNDRiZmZlZTRkMWYyOTc1YmVjOWE2YWI2NzgzXCIsXCJ0eXBlXCI6MSxcInVzZXJuYW1lXCI6XCJob3BAaG9wXCIsXCJ2ZXJzaW9uXCI6MSxcInd4VGVsXCI6XCIxNTA4NDMxMDA0MVwifSJ9.HDfk_qBxhAmw9tAaPxFotSRVFjDmCYqWa7i14BtAc68"            },
+            previewArr: preview,
+            thumb: {
+                width: 120,
+                height: 90,
+                quality: 100,
+                allowMagnify: true,
+                crop: true,
+                type: "image/jpeg"
+            }
+        });
+        // 提交
+        $("#upload").click(function () {
+            var arr = $('#goodsUpload').getImgIdArr();
+            console.log(arr);
+        });
+    });
+</script>
+
+</html>
