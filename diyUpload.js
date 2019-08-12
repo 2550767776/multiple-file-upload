@@ -138,7 +138,7 @@ document.write('<script src="./webuploader.min.js"></script>');
             var $parentFileBox = $fileInput.parents(".upload-ul");
             var arr = [];
             $parentFileBox.children(".diyUploadHover").each(function () {
-                arr.push($(this).attr("id").split("fileBox_")[1])
+                arr.unshift($(this).attr("id").split("fileBox_")[1])
             });
             return arr;
         },
