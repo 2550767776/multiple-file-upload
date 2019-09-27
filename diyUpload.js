@@ -1,7 +1,6 @@
-/* 
+/*
  *	jQuery文件上传插件,封装UI,上传处理操作采用Baidu WebUploader;
  */
-document.write('<script src="./webuploader.min.js"></script>');
 (function ($) {
 
     $.fn.extend({
@@ -22,6 +21,11 @@ document.write('<script src="./webuploader.min.js"></script>');
             if (opt.url) {
                 opt.server = opt.url;
                 delete opt.url;
+            }
+
+            if (opt.begin) {
+                var begin = opt.begin;
+                delete opt.begin;
             }
 
             if (opt.success) {
@@ -54,6 +58,7 @@ document.write('<script src="./webuploader.min.js"></script>');
             //绑定文件加入队列事件;
             webUploader.on('fileQueued', function (file) {
                 webUploader.upload();
+                begin();
                 // createBox( $fileInput, file ,webUploader);
             });
 
@@ -157,11 +162,11 @@ document.write('<script src="./webuploader.min.js"></script>');
                 label: ""
             },
             //类型限制;
-            accept: {
+            /*accept: {
                 title: "Images",
-                extensions: "gif,jpg,jpeg,bmp,png",
-                mimeTypes: "image/*"
-            },
+                extensions: "gif,jpg,jpeg,bmp,png,3gp,mp4,rmvb,mov,avi,m4v",
+                mimeTypes: "image/*,video/*,audio/*,application/*"
+            },*/
             //配置生成缩略图的选项
             thumb: {
                 width: 160,
@@ -174,7 +179,7 @@ document.write('<script src="./webuploader.min.js"></script>');
                 crop: true,
                 // 为空的话则保留原有图片格式。
                 // 否则强制转换成指定的类型。
-                type: "image/jpeg"
+                // type: "image/jpeg"
             },
             //文件上传方式
             method: "POST",
@@ -270,7 +275,13 @@ document.write('<script src="./webuploader.min.js"></script>');
         // }
 
         //生成预览缩略图;
-        $fileBox.find('.viewThumb').append('<img src="' + fileUrl + '" >');
+        var reg = /^\S+\.(swf|flv|mp4|rmvb|avi|mpeg|ra|ram|mov|wmv)$/;
+        console.log(reg.test(fileUrl));
+        if (reg.test(fileUrl)) {
+            $fileBox.find('.viewThumb').append('<video style="border: 2px solid red;border-radius: 2px;" src="' + fileUrl + '" >');
+        } else {
+            $fileBox.find('.viewThumb').append('<img src="' + fileUrl + '" >');
+        }
         // webUploader.makeThumb(file, function (error, dataSrc) {
         //     if (!error) {
         //         $fileBox.find('.viewThumb').append('<img src="' + dataSrc + '" >');
